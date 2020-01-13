@@ -1,0 +1,46 @@
+esphomeyaml:
+  name: moisture_demo
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Enable over-the-air software flashing/upgrades
+ota:
+
+# Enable on-board web-server on port 80
+web_server:
+
+# Configure sensors connected to the node
+sensor:
+  - platform: adc
+    pin: A0
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    icon: "mdi:flower-outline"
+    filters:
+      # Calibrate analog sensor
+      - lambda: |-
+          if (x > 0.64) {
+            return 0;
+          } else if (x < 0.32) {
+            return 100;
+          } else {
+            return (0.64-x) / (0.64-0.32) * 100.0;
+          }
+      # Average/smooth values using moving average filter
+      # - sliding_window_moving_average:
+      #     window_size: 15
+      #     send_every: 15
+    name: "Soil Moisture Level"
+    update_interval: 20s
+  - platform: uptime
+    name: Uptime Sensor
