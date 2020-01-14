@@ -1,5 +1,3 @@
-Compile & deploy moisture sensor
+## Canva Lightning Talks
 
-```
-esphomeyaml moisture.yaml run
-```
+Just a collection of links and resources from various lightning talks I have presented at Canva.
